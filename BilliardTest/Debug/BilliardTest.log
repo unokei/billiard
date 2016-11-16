@@ -1,0 +1,4 @@
+﻿  Ball.cpp
+c:\deveropment\visualstudio\billiardtest\ball.cpp(40): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+  BilliardTest.vcxproj -> C:\deveropment\VisualStudio\BilliardTest\Debug\BilliardTest.exe
+  BilliardTest.vcxproj -> C:\deveropment\VisualStudio\BilliardTest\Debug\BilliardTest.pdb (Full PDB)

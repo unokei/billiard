@@ -1,6 +1,7 @@
 #include "Ball.h"
 
 
+
 CBall::CBall()
 {
 	number = -1;
@@ -33,8 +34,13 @@ CBall::~CBall()
 
 //更新
 void CBall::Update() {
+	if (fall) {
+		return;
+	}
+
 	//ボールの位置更新
 	position = VAdd(position, power);	//力ベクトル方向に移動
+	position.z = 0;
 
 	//ボールの力の減衰
 	power = VScale(power, 0.99f);		//1fごとに1%力を失う（物理的には正しくない）
@@ -44,6 +50,10 @@ void CBall::Update() {
 }
 
 void CBall::Draw() {
+	if (fall) {
+		return;
+	}
+
 	//球を描画
 	DrawSphere3D(position, radius, 32, color, GetColor(255, 255, 255), TRUE);
 
@@ -60,6 +70,11 @@ VECTOR CBall::GetPosition() {
 	return position;
 }
 
+//半径の取得
+float CBall::GetRadius() {
+	return radius;
+}
+
 //力の取得
 VECTOR CBall::GetPower() {
 	return power;
@@ -68,6 +83,16 @@ VECTOR CBall::GetPower() {
 //力を加える
 void CBall::AddPower(VECTOR addpower) {
 	power = VAdd(power, addpower);
+}
+
+//落ちてるかどうか取得
+bool CBall::GetFallFlag() {
+	return fall;
+}
+
+//落下状態を復帰
+void CBall::FallRecover() {
+	fall = false;
 }
 
 //ボールとぶつかる(ボールの配列アドレス，ボールの数)
@@ -114,4 +139,22 @@ void CBall::HitWall(CWall *wall, int length) {
 		}
 		wall++;
 	}
+}
+
+//穴に落ちる
+void CBall::FallinHole(CHole *hole ,int length){
+	//全穴探索
+	for (int i = 0; i < length; i++) {
+		float distance = VSize(VSub(hole->GetCenter(), position));	//壁と球の中心との距離
+		
+		//距離が穴の半径以下なら落下
+		if (distance <= hole->GetRaidus()) {
+			//落下
+			fall = true;
+			position = VGet(1000, 1000, 1000);
+			power = VGet(0.f, 0.f, 0.f);
+		}
+		hole++;
+	}
+
 }

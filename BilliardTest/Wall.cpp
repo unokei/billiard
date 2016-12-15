@@ -37,4 +37,7 @@ VECTOR CWall::GetEndPoint() {
 
 void CWall::Draw() {
 	DrawLine3D(startPoint, endPoint, GetColor(255, 255, 255));
+	DrawLine3D(VSub(startPoint,VScale(heightVector,5.0f)), VSub(endPoint,VScale(heightVector, 5.0f)), GetColor(255, 255, 255));
+	DrawLine3D(startPoint, VSub(startPoint, VScale(heightVector, 5.0f)), GetColor(255, 255, 255));
+	DrawLine3D(endPoint, VSub(endPoint, VScale(heightVector, 5.0f)), GetColor(255, 255, 255));
 }
